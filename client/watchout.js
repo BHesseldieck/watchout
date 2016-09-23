@@ -16,11 +16,34 @@ var axes = {
   y: d3.scale.linear().domain([0, 100]).range([0, gameOptions.height])
 };
 
-var gameBoard = d3.select('.board').append('svg:svg')
+d3.select('.board').append('svg:svg')
                 .attr('width', gameOptions.width)
                 .attr('height', gameOptions.height);
 
+var svg = d3.select('svg');
+//+ turns it to number instead of string
+var width = +svg.attr('width');
+var height = +svg.attr('height');
+var radius = 32;
+//create enemies
 
+var circles = d3.range(0, gameOptions.nEnemies).map(function(i) {
+  return {
+    id: i,
+    x: Math.floor(Math.random() * ( width - radius * 2)),
+    y: Math.floor(Math.random() * ( width - radius * 2))
+  }; 
+});
+
+svg.selectAll('circle')
+	.data(circles)
+	.enter().append('circle')
+		.attr('cx', function(d) { return d.x; })
+		.attr('cy', function(d) { return d.y; })
+		.attr('r', radius)
+		.style('fill', function(d, i) { return 'white'; });
+
+//remember to add dragability on these
 
 //score updates
 var updateScore = function() { 

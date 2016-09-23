@@ -9,8 +9,9 @@ body{
   font-size: 18px;
 }
 
-.board{
-	background-color: red;
+.board svg {
+		border: 5px solid green;
+		background-color: orange;
 }
 
 .enemy{
