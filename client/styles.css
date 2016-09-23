@@ -1,5 +1,23 @@
 /* your beautiful css styling goes here! */
+body, html{
+  height:100%;
+}
 
+body{
+  margin: 0px;
+  background-color: #f2f2f2;
+  font-size: 18px;
+}
+
+.board{
+	background-color: red;
+}
+
+.enemy{
+	background-image: url('asteroid.png');
+	width: 100px;
+	height: 100px;
+}
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
