@@ -25,8 +25,8 @@ d3.select('.board').append('svg:svg')
 //set variables so that we can use them in creating enemies
 var svg = d3.select('svg');
 //+ turns it to number instead of string
-var width = +svg.attr('width');
-var height = +svg.attr('height');
+var width = Number(svg.attr('width'));
+var height = Number(svg.attr('height'));
 var radius = 20;
 
 //create enemiesat random x and y location
@@ -42,22 +42,17 @@ var enemyCircles = d3.range(0, gameOptions.nEnemies).map(function(i) {
 //and set to color white
 //this has to be circle because we are making circle elements
 //with a circle x and circle y and radius?
-svg.selectAll('circleEnemey')
+svg.selectAll('enemyCircle')
 	.data(enemyCircles)
 	.enter().append('circle')
 		.attr('cx', function(d) { return d.x; })
 		.attr('cy', function(d) { return d.y; })
 		.attr('r', radius)
 		.style('fill', 'black');
-		//can set to random color following the tutorial
 
 var player = {id: 99999, x: 100, y: 100};
 //make a player and append to svg container
-svg.append('circle')
-		.attr('cx', player.x)
-		.attr('cy', player.y)
-		.attr('r', radius)
-		.style('fill', 'red')
+svg.selectAll('enemyCirle')
 		.call(d3.drag()
 			.on('start', dragStarted)
 			.on('drag', dragged)

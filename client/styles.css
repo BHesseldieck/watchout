@@ -10,8 +10,8 @@ body{
 }
 
 .board svg {
-		border: 5px solid green;
-		background-color: orange;
+		border: 5px solid orange;
+		background-color: pink;
 }
 /*this doesn't do anything--why?
 .board circle {
