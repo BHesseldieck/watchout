@@ -13,7 +13,11 @@ body{
 		border: 5px solid green;
 		background-color: orange;
 }
-
+/*this doesn't do anything--why?
+.board circle {
+	fill: red;
+}
+*/
 .enemy{
 	background-image: url('asteroid.png');
 	width: 100px;
