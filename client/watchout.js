@@ -20,7 +20,8 @@ var axes = {
 //create a board that is svg of given width and height above
 d3.select('.board').append('svg:svg')
                 .attr('width', gameOptions.width)
-                .attr('height', gameOptions.height);
+                .attr('height', gameOptions.height)
+                .attr('class', 'whitehouse');
 
 //set variables so that we can use them in creating enemies
 var svg = d3.select('svg');
@@ -142,11 +143,13 @@ var collisionCheck = function () {
         updateHighScore();
       }
       gameStats.score = 0;
+      // svg.attr('class', null);
+      // setTimeout(function() { svg.attr('class', 'whitehouse'); }, 500);
     }
   });
 };
 
-setInterval(collisionCheck, 10);
+setInterval(collisionCheck, 1);
 
 //score updates
 var updateScore = function() {

@@ -10,13 +10,11 @@ body{
 }
 
 .board svg {
-  	background-color: pink;
-	  background-image: url('whiteHouse.jpg');
+	background-color: pink;
 }
 
-.enemy{
-	width: 100px;
-	height: 100px;
+.whitehouse {
+  background-image: url('whiteHouse.jpg');
 }
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
