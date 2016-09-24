@@ -10,16 +10,11 @@ body{
 }
 
 .board svg {
-		border: 5px solid orange;
-		background-color: pink;
+  	background-color: pink;
+	  background-image: url('whiteHouse.jpg');
 }
-/*this doesn't do anything--why?
-.board circle {
-	fill: red;
-}
-*/
+
 .enemy{
-	background-image: url('asteroid.png');
 	width: 100px;
 	height: 100px;
 }

@@ -1,8 +1,8 @@
 // start slingin' some d3 here.
 var gameOptions = {
-  height: 450,
-  width: 700,
-  nEnemies: 30,
+  height: 600,
+  width: 800,
+  nEnemies: 40,
   padding: 20
 };
 
@@ -27,7 +27,7 @@ var svg = d3.select('svg');
 //+ turns it to number instead of string
 var width = Number(svg.attr('width'));
 var height = Number(svg.attr('height'));
-var radius = 20;
+var radius = 45;
 
 //create enemiesat random x and y location
 var enemyCircles = d3.range(0, gameOptions.nEnemies).map(function(i) {
@@ -42,24 +42,25 @@ var enemyCircles = d3.range(0, gameOptions.nEnemies).map(function(i) {
 //and set to color white
 //this has to be circle because we are making circle elements
 //with a circle x and circle y and radius?
-svg.selectAll('.enemyCircle')
+svg.selectAll('enemyCircle')
 	.data(enemyCircles, function(d) { return d.id; })
-	.enter().append('circle')
+	.enter().append('svg:image')
+    .attr('xlink:href', 'trump4.png')
     .attr('class', 'enemyCircle')
-		.attr('cx', function(d) { return d.x; })
-		.attr('cy', function(d) { return d.y; })
-		.attr('r', radius)
-		.style('fill', 'black');
+		.attr('x', function(d) { return d.x; })
+		.attr('y', function(d) { return d.y; })
+		.attr('width', radius)
+    .attr('height', radius);
 
 
 //move to a new random location every second
 var enemyNewLocation = function() {
-  svg.selectAll('circle.enemyCircle')
+  svg.selectAll('.enemyCircle')
     .data(enemyCircles)
     .transition()
       .duration(900)
-    .attr('cx', function (d) { return d.x = Math.floor(Math.random() * ( width - radius * 2) + radius); })
-    .attr('cy', function (d) { return d.y = Math.floor(Math.random() * ( height - radius * 2) + radius); });
+    .style('x', function (d) { return d.x = Math.floor(Math.random() * ( width - radius)); })
+    .style('y', function (d) { return d.y = Math.floor(Math.random() * ( height - radius)); });
 };    
 //cool thing for later: change radius every second as well
 
@@ -83,14 +84,15 @@ var drag = d3.behavior.drag()
     .on('dragend', function(d) { return dragended.bind(this)(d); });
 
 
-svg.selectAll('.player')
+svg.selectAll('player')
   .data(player)
-  .enter().append('circle')
+  .enter().append('svg:image')
+      .attr('xlink:href', 'hillary.png')
       .attr('class', 'player')
-      .attr('cx', function(d) { return d.x; })
-      .attr('cy', function(d) { return d.y; })
-      .attr('r', radius)
-      .style('fill', 'red')
+      .attr('x', function(d) { return d.x; })
+      .attr('y', function(d) { return d.y; })
+      .attr('width', radius)
+      .attr('height', radius)
       .call(drag);
 //make player draggable --> when dragged, call dragstarted
 //when moving, call dragged/ when done, call end
@@ -100,7 +102,6 @@ svg.selectAll('.player')
 //using raise to allow movement
 var dragstarted = function(d) {
   d3.select(this).classed('dragging', true);
-
 };
 
 //during drag, allows cx and cy to change to where you move them
@@ -111,19 +112,19 @@ var dragged = function(d) {
   var currX = d3.event.x;
   var currY = d3.event.y;
 
-  if (currX < radius) {
-    currX = radius;
+  if (currX < 0) {
+    currX = 0;
   } else if (currX > width - radius) {
     currX = width - radius;
   }
 
-  if (currY < radius) {
-    currY = radius;
+  if (currY < 0) {
+    currY = 0;
   } else if (currY > height - radius) {
     currY = height - radius;
   }
 
-  d3.select(this).attr('cx', d.x = currX).attr('cy', d.y = currY);
+  d3.select(this).attr('x', d.x = currX).attr('y', d.y = currY);
   
 };
 
@@ -136,7 +137,7 @@ var dragended = function(d) {
 var collisionCheck = function () {
   enemyCircles.forEach(function(enemy) {
     var a = Math.sqrt(Math.pow(enemy.x - player[0].x, 2) + Math.pow(enemy.y - player[0].y, 2));
-    if (a <= (radius * 2)) {
+    if (a <= (radius)) {
       if (gameStats.score > gameStats.highScore) {
         updateHighScore();
       }
