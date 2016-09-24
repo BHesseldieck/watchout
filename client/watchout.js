@@ -8,7 +8,7 @@ var gameOptions = {
 
 var gameStats = {
   score: 0,
-  bestScore: 0
+  highScore: 0
 };
 
 //create axes why?
@@ -57,17 +57,19 @@ var enemyNewLocation = function() {
   svg.selectAll('circle.enemyCircle')
     .data(enemyCircles)
     .transition()
-      .duration(750)
-    .attr('cx', function (d) { return d.x = Math.floor(Math.random() * ( width - radius * 2)); })
+      .duration(900)
+    .attr('cx', function (d) { return d.x = Math.floor(Math.random() * ( width - radius * 2) + radius); })
     .attr('cy', function (d) { return d.y = Math.floor(Math.random() * ( height - radius * 2) + radius); });
 };    
 //cool thing for later: change radius every second as well
 
 //interval function that calls update function
-setInterval(enemyNewLocation, 1000);
+setInterval(() => {
+  enemyNewLocation();
+  updateScore();
+}, 1000);
   //update function 
     //calls enemyNewLocation
-    //calls playerNewLocation
     //calls score update
 
 //players
@@ -105,7 +107,24 @@ var dragstarted = function(d) {
 //we can't use svg.select(this) -- it gives us an error that we
 //cannot query the object... does that mean it can't get object SVGcircle from the svg? 
 var dragged = function(d) {
-  d3.select(this).attr('cx', d.x = d3.event.x).attr('cy', d.y = d3.event.y);
+  //if our d3.event.x > radius and < width - radius 
+  var currX = d3.event.x;
+  var currY = d3.event.y;
+
+  if (currX < radius) {
+    currX = radius;
+  } else if (currX > width - radius) {
+    currX = width - radius;
+  }
+
+  if (currY < radius) {
+    currY = radius;
+  } else if (currY > height - radius) {
+    currY = height - radius;
+  }
+
+  d3.select(this).attr('cx', d.x = currX).attr('cy', d.y = currY);
+  
 };
 
 //after drag, set raise to false
@@ -113,15 +132,29 @@ var dragended = function(d) {
   d3.select(this).classed('dragging', false);
 };
 
-//score updates
-var updateScore = function() { 
-  d3.select('#current-score')
-    .text(gameStats.score.toString());
+
+var collisionCheck = function () {
+  enemyCircles.forEach(function(enemy) {
+    var a = Math.sqrt(Math.pow(enemy.x - player[0].x, 2) + Math.pow(enemy.y - player[0].y, 2));
+    if (a <= (radius * 2)) {
+      if (gameStats.score > gameStats.highScore) {
+        updateHighScore();
+      }
+      gameStats.score = 0;
+    }
+  });
 };
 
-var updateBestScore = function() {
-  gameStats.bestScore =
-    _.max [gameStats.bestScore, gameStats.score];
+setInterval(collisionCheck, 10);
 
-  d3.select('#best-score').text(gameStats.bestScore.toString());
+//score updates
+var updateScore = function() {
+  gameStats.score ++;
+  d3.select('.current')
+    .text(gameStats.score);
+};
+
+var updateHighScore = function() {
+  gameStats.highScore = gameStats.score;
+  d3.select('.highscore').text(gameStats.highScore);
 };
